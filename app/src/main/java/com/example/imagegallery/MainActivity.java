@@ -32,36 +32,33 @@ public class MainActivity extends AppCompatActivity {
     private String key = BuildConfig.ApiKey;
     private MainActivityViewModel mainActivityViewModel;
     private ViewAdapter mAdapter;
+    private RecyclerView recyclerView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //testing
-        List<FlickrImage> list = new ArrayList<>();
-        list.add(new FlickrImage("test id", "title1", R.drawable.ic_launcher_background));
-        list.add(new FlickrImage("test id", "title2", R.drawable.ic_launcher_background));
-
-
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        ViewAdapter adapter = new ViewAdapter(this, list);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter(adapter);
+        recyclerView = findViewById(R.id.recycler_view);
 
         String url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+key+"&tags=kitten&page=1&format=json&nojsoncallback=1";
         connectToApi(url);
-    /*
-        mainActivityViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainActivityViewModel.class);
 
+        mainActivityViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainActivityViewModel.class);
+        mainActivityViewModel.init();
         mainActivityViewModel.getImages().observe(this, new Observer<List<FlickrImage>>() {
             @Override
             public void onChanged(List<FlickrImage> flickrImages) {
-               // mAdapter.notifyDataSetChanged();
+               mAdapter.notifyDataSetChanged();
             }
         });
-*/
+        initializeView();
+    }
+
+    private void initializeView(){
+        mAdapter = new ViewAdapter(this, mainActivityViewModel.getImages().getValue());
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setAdapter(mAdapter);
     }
 
 
