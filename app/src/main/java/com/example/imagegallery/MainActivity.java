@@ -2,14 +2,24 @@ package com.example.imagegallery;
 
 import android.os.Bundle;
 
+import com.example.imagegallery.adapters.ViewAdapter;
+import com.example.imagegallery.models.FlickrImage;
+import com.example.imagegallery.viewmodels.MainActivityViewModel;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -20,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     //in a real project, gradle.properties would not be comitted to github
     private String key = BuildConfig.ApiKey;
-
+    private MainActivityViewModel mainActivityViewModel;
+    private ViewAdapter mAdapter;
 
 
     @Override
@@ -28,10 +39,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //testing
+        List<FlickrImage> list = new ArrayList<>();
+        list.add(new FlickrImage("test id", "title1", R.drawable.ic_launcher_background));
+        list.add(new FlickrImage("test id", "title2", R.drawable.ic_launcher_background));
+
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        ViewAdapter adapter = new ViewAdapter(this, list);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setAdapter(adapter);
+
         String url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+key+"&tags=kitten&page=1&format=json&nojsoncallback=1";
         connectToApi(url);
+    /*
+        mainActivityViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainActivityViewModel.class);
 
-
+        mainActivityViewModel.getImages().observe(this, new Observer<List<FlickrImage>>() {
+            @Override
+            public void onChanged(List<FlickrImage> flickrImages) {
+               // mAdapter.notifyDataSetChanged();
+            }
+        });
+*/
     }
 
 
