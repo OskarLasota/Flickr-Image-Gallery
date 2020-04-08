@@ -1,5 +1,7 @@
 package com.example.imagegallery.viewmodels;
 
+import android.os.AsyncTask;
+
 import com.example.imagegallery.models.FlickrImage;
 import com.example.imagegallery.repository.FlickrImageRepository;
 
@@ -13,6 +15,7 @@ public class MainActivityViewModel extends ViewModel {
 
     private MutableLiveData<List<FlickrImage>> mImages;
     private FlickrImageRepository repo;
+    private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
 
 
     public void init(){
@@ -23,8 +26,34 @@ public class MainActivityViewModel extends ViewModel {
         mImages = repo.getImages();
     }
 
+    public void addNewValue(final FlickrImage flickrImage){
+        isUpdating.setValue(true);
+
+        new AsyncTask<Void, Void, Void>(){
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                List<FlickrImage> current = mImages.getValue();
+                current.add(flickrImage);
+                mImages.postValue(current);
+                isUpdating.postValue(false);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                return null;
+            }
+        }.execute();
+
+    }
+
     public LiveData<List<FlickrImage>> getImages(){
         return mImages;
+    }
+
+    public LiveData<Boolean> getIsUpdating(){
+        return isUpdating;
     }
 
 }

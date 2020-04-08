@@ -52,6 +52,18 @@ public class MainActivity extends AppCompatActivity {
                mAdapter.notifyDataSetChanged();
             }
         });
+        //animation when list is loading
+        mainActivityViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+                    System.out.println("loading");
+                }else{
+                    System.out.println("finished");
+                }
+            }
+        });
+        mainActivityViewModel.addNewValue(new FlickrImage("test id", "title1", R.drawable.ic_launcher_background));
         initializeView();
     }
 
