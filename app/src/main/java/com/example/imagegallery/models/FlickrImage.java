@@ -1,21 +1,34 @@
 package com.example.imagegallery.models;
 
+import android.widget.ImageView;
+
 public class FlickrImage {
 
 
     private String imageId;
     private String imageTitle;
-    private int drawableid;
+    private String imageUrl;
+    private ImageView image;
 
-    public FlickrImage(String imageId, String imageTitle, int drawableid){
+    public FlickrImage(String imageId, String imageTitle){
         this.setImageId(imageId);
         this.setImageTitle(imageTitle);
-        this.drawableid = drawableid;
+        this.imageUrl = "";
+        this.image = null;
     }
 
+    public ImageView getImage(){
+        return image;
+    }
+    public void setImage(ImageView image){
+        this.image = image;
+    }
 
-    public int getDrawableId(){
-        return drawableid;
+    public String getImageURL(){
+        return imageUrl;
+    }
+    public void setImageURL(String val){
+        this.imageUrl = val;
     }
 
     public String getImageId() {

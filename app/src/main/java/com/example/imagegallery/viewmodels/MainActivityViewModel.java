@@ -26,6 +26,14 @@ public class MainActivityViewModel extends ViewModel {
         mImages = repo.getImages();
     }
 
+
+
+    public LiveData<List<FlickrImage>> getImages(){
+        return mImages;
+    }
+
+
+    /*
     public void addNewValue(final FlickrImage flickrImage){
         isUpdating.setValue(true);
 
@@ -47,11 +55,7 @@ public class MainActivityViewModel extends ViewModel {
         }.execute();
 
     }
-
-    public LiveData<List<FlickrImage>> getImages(){
-        return mImages;
-    }
-
+    */
     public LiveData<Boolean> getIsUpdating(){
         return isUpdating;
     }

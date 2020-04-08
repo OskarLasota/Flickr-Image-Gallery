@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.imagegallery.R;
 import com.example.imagegallery.models.FlickrImage;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvTitle.setText(data.get(position).getImageTitle());
-        holder.ivImage.setImageResource(data.get(position).getDrawableId());
+        Picasso.with(context).load(data.get(position).getImageURL()).into(holder.ivImage);
     }
 
     @Override
