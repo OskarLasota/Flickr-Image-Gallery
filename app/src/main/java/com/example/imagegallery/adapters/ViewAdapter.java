@@ -16,6 +16,7 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
 
     private Context context;
     private List<FlickrImage> data;
+    private OnItemClickListener listener;
 
     public ViewAdapter(Context context, List<FlickrImage> data){
         this.context = context;
@@ -37,6 +38,7 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tvTitle.setText(data.get(position).getImageTitle());
         Picasso.with(context).load(data.get(position).getImageURL()).into(holder.ivImage);
+
     }
 
     @Override
@@ -46,7 +48,7 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
 
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView ivImage;
         TextView tvTitle;
@@ -57,8 +59,27 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
             tvTitle = itemView.findViewById(R.id.image_title);
             ivImage = itemView.findViewById(R.id.imageview_id);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(data.get(position));
+                        System.out.println("position is : " + position);
+                    }
+                }
+            });
+
         }
 
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(FlickrImage note);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 
 }

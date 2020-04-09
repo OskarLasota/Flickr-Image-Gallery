@@ -22,10 +22,9 @@ public class MainActivityViewModel extends ViewModel {
         if(mImages != null){
             return;
         }
-        isUpdating.setValue(true);
         repo = FlickrImageRepository.getInstance();
-        mImages = repo.getImages();
-        isUpdating.setValue(false);
+        mImages = repo.getEntries();
+        isUpdating = repo.getProcess();
     }
 
 
