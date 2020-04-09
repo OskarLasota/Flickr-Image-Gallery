@@ -22,8 +22,10 @@ public class MainActivityViewModel extends ViewModel {
         if(mImages != null){
             return;
         }
+        isUpdating.setValue(true);
         repo = FlickrImageRepository.getInstance();
         mImages = repo.getImages();
+        isUpdating.setValue(false);
     }
 
 
@@ -32,32 +34,7 @@ public class MainActivityViewModel extends ViewModel {
         return mImages;
     }
 
-
-    /*
-    public void addNewValue(final FlickrImage flickrImage){
-        isUpdating.setValue(true);
-
-        new AsyncTask<Void, Void, Void>(){
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                List<FlickrImage> current = mImages.getValue();
-                current.add(flickrImage);
-                mImages.postValue(current);
-                isUpdating.postValue(false);
-            }
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                return null;
-            }
-        }.execute();
-
-    }
-    */
     public LiveData<Boolean> getIsUpdating(){
         return isUpdating;
     }
-
 }

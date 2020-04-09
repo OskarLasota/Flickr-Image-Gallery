@@ -6,14 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.imagegallery.R;
 import com.example.imagegallery.models.FlickrImage;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
@@ -26,9 +22,9 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
         this.data = data;
     }
 
-    @NonNull
+
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -38,7 +34,7 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tvTitle.setText(data.get(position).getImageTitle());
         Picasso.with(context).load(data.get(position).getImageURL()).into(holder.ivImage);
     }
@@ -55,7 +51,7 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
         ImageView ivImage;
         TextView tvTitle;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
 
             tvTitle = itemView.findViewById(R.id.image_title);

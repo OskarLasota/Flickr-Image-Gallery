@@ -1,6 +1,8 @@
 package com.example.imagegallery;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.imagegallery.adapters.ViewAdapter;
 import com.example.imagegallery.models.FlickrImage;
@@ -20,17 +22,19 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityViewModel mainActivityViewModel;
     private ViewAdapter mAdapter;
     private RecyclerView recyclerView;
-
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recycler_view);
+        progressBar = findViewById(R.id.progressBar);
 
 
         mainActivityViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainActivityViewModel.class);
         mainActivityViewModel.init();
+
         mainActivityViewModel.getImages().observe(this, new Observer<List<FlickrImage>>() {
             @Override
             public void onChanged(List<FlickrImage> flickrImages) {
@@ -38,14 +42,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //animation when list is loading
+        //animation when list is loading but is blocked by the thread.sleep
         mainActivityViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean){
-                    System.out.println("loading");
+                    progressBar.setVisibility(View.VISIBLE);
                 }else{
-                    System.out.println("finished");
+                    progressBar.setVisibility(View.GONE);
                 }
             }
         });
