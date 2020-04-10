@@ -1,11 +1,15 @@
 package com.example.imagegallery;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.example.imagegallery.models.FlickrImage;
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayInputStream;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +28,9 @@ public class FullScreenImageActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         image = (FlickrImage) bundle.getSerializable("key");
 
-        Picasso.with(this.getApplicationContext()).load(image.getLargeImageURL()).into(ivImage);
+        ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(image.getLargeImageByte());
+        Bitmap bitmap = BitmapFactory.decodeStream(arrayInputStream);
+        ivImage.setImageBitmap(bitmap);
+
     }
 }
