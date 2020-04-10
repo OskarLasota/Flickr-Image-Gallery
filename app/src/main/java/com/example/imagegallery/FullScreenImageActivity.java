@@ -12,11 +12,18 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayInputStream;
 
 import androidx.appcompat.app.AppCompatActivity;
+import maes.tech.intentanim.CustomIntent;
 
 public class FullScreenImageActivity extends AppCompatActivity {
 
     private FlickrImage image;
     private ImageView ivImage;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CustomIntent.customType(FullScreenImageActivity.this, "fadein-to-fadeout");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

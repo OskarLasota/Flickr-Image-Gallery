@@ -21,6 +21,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import maes.tech.intentanim.CustomIntent;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent inte = new Intent(MainActivity.this, FullScreenImageActivity.class);
                 inte.putExtras(bundle);
                 startActivity(inte);
+                CustomIntent.customType(MainActivity.this, "fadein-to-fadeout");
             }
         });
     }
