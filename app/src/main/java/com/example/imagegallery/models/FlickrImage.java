@@ -7,8 +7,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class FlickrImage implements Serializable {
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "image_table")
+public class FlickrImage implements Serializable {
+    @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
     @Expose
     private String imageId;
@@ -18,35 +22,37 @@ public class FlickrImage implements Serializable {
 
     private String imageUrl;
     private String largeImageURL;
-    private ImageView image;
-    private ImageView fullScreenImage;
+
+    private byte[] imageByte;
+    private byte[] largeImageByte;
+
 
     public FlickrImage(String imageId, String imageTitle){
         this.setImageId(imageId);
         this.setImageTitle(imageTitle);
         this.imageUrl = "";
         this.largeImageURL = "";
-        this.image = null;
-        this.fullScreenImage = null;
+        this.largeImageByte = null;
+        this.imageByte = null;
     }
 
 
-
-
-
-    public ImageView getLargeImage(){
-        return fullScreenImage;
-    }
-    public void setLargeImage(ImageView image){
-        this.fullScreenImage = image;
+    public byte[] getImageByte() {
+        return imageByte;
     }
 
-    public ImageView getImage(){
-        return image;
+    public void setImageByte(byte[] imageByte) {
+        this.imageByte = imageByte;
     }
-    public void setImage(ImageView image){
-        this.image = image;
+
+    public byte[] getLargeImageByte() {
+        return largeImageByte;
     }
+
+    public void setLargeImageByte(byte[] largeImageByte) {
+        this.largeImageByte = largeImageByte;
+    }
+
 
     public String getLargeImageURL() { return largeImageURL; }
     public void setLargeImageURL(String url) { this.largeImageURL = url;}

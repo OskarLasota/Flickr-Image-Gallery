@@ -1,13 +1,25 @@
 package com.example.imagegallery.repository;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import com.example.imagegallery.BuildConfig;
 import com.example.imagegallery.api.ApiResult;
 import com.example.imagegallery.api.JsonPlaceHolderApi;
 import com.example.imagegallery.models.FlickrImage;
+
+import org.apache.http.util.ByteArrayBuffer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import androidx.lifecycle.MutableLiveData;
@@ -27,6 +39,9 @@ public class FlickrImageRepository {
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private MutableLiveData<List<FlickrImage>> data;
     private MutableLiveData<Boolean> process;
+    public static final int SMALL_IMAGE_REQUEST = 1;
+    public static final int LARGE_IMAGE_REQUEST = 2;
+
 
     public static FlickrImageRepository getInstance(){
         if(instance == null){
@@ -113,8 +128,9 @@ public class FlickrImageRepository {
                             JSONObject obj2 = photos.getJSONObject(9);
                             String url2 = obj2.getString("source");
                             dataSet.get(index).setLargeImageURL(url2);
+                            getByteArrayImage(dataSet.get(index), LARGE_IMAGE_REQUEST);
                         }
-
+                        getByteArrayImage(dataSet.get(index), SMALL_IMAGE_REQUEST);
                         dataSet.get(index).setImageURL(url);
                         //post results
                         data.postValue(dataSet);
@@ -126,7 +142,30 @@ public class FlickrImageRepository {
 
             }
         });
+    }
 
+    private void getByteArrayImage(FlickrImage image, int request){
+        try {
+            URL imageUrl;
+            imageUrl = (request == 0) ? new URL(image.getImageURL()) : new URL((image.getLargeImageURL()));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            InputStream is = null;
+
+                is = imageUrl.openStream();
+                byte[] byteChunk = new byte[4096];
+                int n;
+
+                while ( (n = is.read(byteChunk)) > 0 ) {
+                    baos.write(byteChunk, 0, n);
+                }
+            if(request == 0)
+                image.setImageByte(baos.toByteArray());
+            else
+                image.setLargeImageByte(baos.toByteArray());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

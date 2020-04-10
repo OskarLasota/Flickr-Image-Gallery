@@ -13,15 +13,16 @@ import androidx.lifecycle.ViewModel;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private MutableLiveData<List<FlickrImage>> mImages;
     private FlickrImageRepository repo;
-    private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
+    private MutableLiveData<List<FlickrImage>> mImages;
+    private MutableLiveData<Boolean> isUpdating;
 
 
     public void init(){
         if(mImages != null){
             return;
         }
+        isUpdating = new MutableLiveData<>();
         repo = FlickrImageRepository.getInstance();
         mImages = repo.getEntries();
         isUpdating = repo.getProcess();
