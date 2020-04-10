@@ -37,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
         //obtain data from the api
         mainActivityViewModel.init();
 
+
+        setObservers();
+        initializeView();
+    }
+
+    private void setObservers(){
         //initialize the view
         mainActivityViewModel.getImages().observe(this, new Observer<List<FlickrImage>>() {
             @Override
@@ -57,10 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-        initializeView();
     }
 
     private void initializeView(){

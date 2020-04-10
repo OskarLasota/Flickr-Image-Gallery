@@ -25,7 +25,5 @@ public class FullScreenImageActivity extends AppCompatActivity {
         image = (FlickrImage) bundle.getSerializable("key");
 
         Picasso.with(this.getApplicationContext()).load(image.getLargeImageURL()).into(ivImage);
-
-
     }
 }

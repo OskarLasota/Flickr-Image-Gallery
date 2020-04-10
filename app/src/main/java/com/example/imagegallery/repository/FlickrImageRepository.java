@@ -108,13 +108,14 @@ public class FlickrImageRepository {
                         JSONArray photos = jsonObject.getJSONObject("sizes").getJSONArray("size");
                         JSONObject obj1 = photos.getJSONObject(1);
                         String url = obj1.getString("source");
+                        //if largeImageExists then initialize it
                         if(photos.length() > 9) {
                             JSONObject obj2 = photos.getJSONObject(9);
                             String url2 = obj2.getString("source");
                             dataSet.get(index).setLargeImageURL(url2);
                         }
-                        dataSet.get(index).setImageURL(url);
 
+                        dataSet.get(index).setImageURL(url);
                         //post results
                         data.postValue(dataSet);
                         process.postValue(false);

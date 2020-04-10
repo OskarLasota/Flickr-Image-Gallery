@@ -26,11 +26,9 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view;
         LayoutInflater inflater = LayoutInflater.from(context);
         view = inflater.inflate(R.layout.cardview, parent, false);
-
         return new ViewHolder(view);
     }
 
@@ -65,7 +63,6 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>{
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(data.get(position));
-                        System.out.println("position is : " + position);
                     }
                 }
             });
