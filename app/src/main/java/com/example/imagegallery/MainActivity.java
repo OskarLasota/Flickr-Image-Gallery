@@ -1,6 +1,9 @@
 package com.example.imagegallery;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -9,7 +12,10 @@ import android.widget.Toast;
 import com.example.imagegallery.adapters.ViewAdapter;
 import com.example.imagegallery.models.FlickrImage;
 import com.example.imagegallery.viewmodels.MainActivityViewModel;
+
+import java.util.ArrayList;
 import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewAdapter mAdapter;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private List<FlickrImage> listOfImages;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
 
         mainActivityViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainActivityViewModel.class);
-
-        //obtain data from the api
-        mainActivityViewModel.init();
-
+        if(isNetworkAvailable()){
+            mainActivityViewModel.apiGetImages();
+        }
+        listOfImages = new ArrayList<FlickrImage>();
 
         setObservers();
-        initializeView();
+        initializeView(listOfImages);
     }
 
     private void setObservers(){
@@ -47,26 +55,28 @@ public class MainActivity extends AppCompatActivity {
         mainActivityViewModel.getImages().observe(this, new Observer<List<FlickrImage>>() {
             @Override
             public void onChanged(List<FlickrImage> flickrImages) {
+                initializeView(mainActivityViewModel.getImages().getValue());
                 mAdapter.notifyDataSetChanged();
-                initializeView();
             }
         });
 
+
         //update loading animation
-        mainActivityViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+        mainActivityViewModel.getIsProcessing().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean){
                     progressBar.setVisibility(View.VISIBLE);
                 }else{
                     progressBar.setVisibility(View.GONE);
+                    mainActivityViewModel.dbStoreImages();
                 }
             }
         });
     }
 
-    private void initializeView(){
-        mAdapter = new ViewAdapter(this, mainActivityViewModel.getImages().getValue());
+    private void initializeView(List<FlickrImage> values){
+        mAdapter = new ViewAdapter(this, values);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setAdapter(mAdapter);
 
@@ -77,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Cannot open big image", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                System.out.println("name : " + note.getImageTitle());
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("key", note);
                 Intent inte = new Intent(MainActivity.this, FullScreenImageActivity.class);
@@ -87,7 +96,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
 }

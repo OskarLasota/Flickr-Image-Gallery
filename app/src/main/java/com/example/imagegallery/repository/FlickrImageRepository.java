@@ -62,7 +62,6 @@ public class FlickrImageRepository {
         apiGetData(url);
         data = new MutableLiveData<>();
         data.setValue(dataSet);
-        System.out.println("returned");
         return data;
     }
 
@@ -75,12 +74,12 @@ public class FlickrImageRepository {
                 .build();
 
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+
         retrofit2.Call<ApiResult> call = jsonPlaceHolderApi.getApiImages("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=f9cc014fa76b098f9e82f1c288379ea1&tags=kitten&page=1&format=json&nojsoncallback=1/");
         call.enqueue(new retrofit2.Callback<ApiResult>() {
             @Override
             public void onResponse(retrofit2.Call<ApiResult> call, retrofit2.Response<ApiResult> response) {
                 if (!response.isSuccessful()) {
-                    System.out.println("here " + response.code());
                     return;
                 }
                 //success here
@@ -94,7 +93,7 @@ public class FlickrImageRepository {
 
             @Override
             public void onFailure(retrofit2.Call<ApiResult> call, Throwable t) {
-                System.out.println("here failure");
+                System.out.println(t.getMessage());
             }
         });
     }
@@ -128,40 +127,38 @@ public class FlickrImageRepository {
                             JSONObject obj2 = photos.getJSONObject(9);
                             String url2 = obj2.getString("source");
                             dataSet.get(index).setLargeImageURL(url2);
-                            getByteArrayImage(dataSet.get(index), LARGE_IMAGE_REQUEST);
+                            getByteArrayImage(dataSet.get(index), LARGE_IMAGE_REQUEST, index);
                         }
-                        getByteArrayImage(dataSet.get(index), SMALL_IMAGE_REQUEST);
-                        dataSet.get(index).setImageURL(url);
+                        dataSet.get(index).setImageUrl(url);
+                        getByteArrayImage(dataSet.get(index), SMALL_IMAGE_REQUEST, index);
                         //post results
                         data.postValue(dataSet);
                         process.postValue(false);
                     }
                 }catch(JSONException e){
-                    System.out.println("error");
+                    e.printStackTrace();
                 }
-
             }
         });
     }
 
-    private void getByteArrayImage(FlickrImage image, int request){
+    private void getByteArrayImage(FlickrImage image, int request, int index){
         try {
             URL imageUrl;
-            imageUrl = (request == 0) ? new URL(image.getImageURL()) : new URL((image.getLargeImageURL()));
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            InputStream is = null;
+            imageUrl = (request == 1) ? new URL(image.getImageUrl()) : new URL((image.getLargeImageURL()));
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
 
-                is = imageUrl.openStream();
-                byte[] byteChunk = new byte[4096];
-                int n;
-
-                while ( (n = is.read(byteChunk)) > 0 ) {
-                    baos.write(byteChunk, 0, n);
+            try (InputStream inputStream = imageUrl.openStream()) {
+                int n = 0;
+                byte [] buffer = new byte[ 1024 ];
+                while (-1 != (n = inputStream.read(buffer))) {
+                    output.write(buffer, 0, n);
                 }
-            if(request == 0)
-                image.setImageByte(baos.toByteArray());
-            else
-                image.setLargeImageByte(baos.toByteArray());
+            }
+            if(request == 1) {
+                dataSet.get(index).setImageByte(output.toByteArray());
+            }else
+                dataSet.get(index).setLargeImageByte(output.toByteArray());
 
         } catch (Exception e) {
             e.printStackTrace();
