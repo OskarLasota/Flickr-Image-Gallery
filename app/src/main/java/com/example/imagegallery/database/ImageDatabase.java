@@ -13,7 +13,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 //singleton
-@Database(entities = {FlickrImage.class}, version = 1)
+@Database(entities = {FlickrImage.class}, version = 1, exportSchema = false)
 public abstract class ImageDatabase extends RoomDatabase {
     private static ImageDatabase instance;
     public abstract ImageDao imageDao();

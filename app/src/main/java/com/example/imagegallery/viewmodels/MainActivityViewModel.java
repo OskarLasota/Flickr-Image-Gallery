@@ -13,7 +13,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private FlickrImageRepository repo;
     private LiveData<List<FlickrImage>> allImages;
-    private LiveData<Boolean> isProcessing;
+    private LiveData<Boolean> isApiProcessing;
     private DaoImageRepository imageRepository;
 
 
@@ -21,7 +21,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     public MainActivityViewModel(Application application){
         super(application);
         imageRepository = new DaoImageRepository(application);
-        isProcessing = new MutableLiveData<>();
+        isApiProcessing = new MutableLiveData<>();
         repo = FlickrImageRepository.getInstance();
         allImages = imageRepository.getAllImages();
     }
@@ -31,7 +31,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     public void apiGetImages(){
         imageRepository.deleteAll();
         allImages = repo.getEntries();
-        isProcessing = repo.getProcess();
+        isApiProcessing = repo.getProcess();
     }
 
     public void dbStoreImages(){
@@ -44,7 +44,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         return allImages;
     }
 
-    public LiveData<Boolean> getIsProcessing(){
-        return isProcessing;
+    public LiveData<Boolean> getIsApiProcessing(){
+        return isApiProcessing;
     }
 }

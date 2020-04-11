@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
+
+
+
+        String searchValue = "kitten";
+
         mainActivityViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainActivityViewModel.class);
         if(isNetworkAvailable()){
             mainActivityViewModel.apiGetImages();
@@ -63,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //update loading animation
-        mainActivityViewModel.getIsProcessing().observe(this, new Observer<Boolean>() {
+        mainActivityViewModel.getIsApiProcessing().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean){
