@@ -43,12 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-        String searchValue = "kitten";
+        //improvising user input
+        String keyword = "kitten";
 
         mainActivityViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(MainActivityViewModel.class);
         if(isNetworkAvailable()){
-            mainActivityViewModel.apiGetImages();
+            mainActivityViewModel.apiGetImages(keyword);
         }
         listOfImages = new ArrayList<FlickrImage>();
 

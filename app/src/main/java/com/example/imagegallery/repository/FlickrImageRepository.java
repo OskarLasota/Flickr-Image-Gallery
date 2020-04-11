@@ -57,8 +57,8 @@ public class FlickrImageRepository {
         return process;
     }
 
-    public MutableLiveData<List<FlickrImage>> getEntries(){
-        String url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+key+"&tags=kitten&page=1&format=json&nojsoncallback=1/";
+    public MutableLiveData<List<FlickrImage>> getEntries(String keyword){
+        String url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+key+"&tags="+keyword+"&page=1&format=json&nojsoncallback=1/";
         apiGetData(url);
         data = new MutableLiveData<>();
         data.setValue(dataSet);

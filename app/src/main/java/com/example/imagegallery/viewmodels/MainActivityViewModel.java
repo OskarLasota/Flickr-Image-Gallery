@@ -28,9 +28,9 @@ public class MainActivityViewModel extends AndroidViewModel {
 
 
 
-    public void apiGetImages(){
+    public void apiGetImages(String keyword){
         imageRepository.deleteAll();
-        allImages = repo.getEntries();
+        allImages = repo.getEntries(keyword);
         isApiProcessing = repo.getProcess();
     }
 
