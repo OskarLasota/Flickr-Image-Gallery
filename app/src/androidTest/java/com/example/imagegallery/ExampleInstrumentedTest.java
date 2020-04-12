@@ -38,16 +38,5 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
         assertEquals("com.example.imagegallery", appContext.getPackageName());
     }
-
-    @Test
-    public void testOnImageClick(){
-        //initialize the adapter
-        FlickrImage img1 = new FlickrImage("id", "title1");
-        List<FlickrImage> list = new ArrayList<FlickrImage>();
-        list.add(img1);
-        ViewAdapter loginPresenter = new ViewAdapter(activityTestRule.getActivity(), list);
-
-        //
-
-    }
+    
 }
