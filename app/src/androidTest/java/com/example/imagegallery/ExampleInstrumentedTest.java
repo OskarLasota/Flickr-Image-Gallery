@@ -38,5 +38,5 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
         assertEquals("com.example.imagegallery", appContext.getPackageName());
     }
-    
+
 }

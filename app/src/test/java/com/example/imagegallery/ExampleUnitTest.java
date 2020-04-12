@@ -24,7 +24,6 @@ import static org.mockito.Mockito.mock;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-@RunWith(MockitoJUnitRunner.class)
 
 public class ExampleUnitTest {
 
