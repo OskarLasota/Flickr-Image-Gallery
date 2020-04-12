@@ -21,10 +21,8 @@ public class FlickrImage implements Serializable {
     @SerializedName("title")
     @Expose
     private String imageTitle;
-
     private String imageUrl;
     private String largeImageURL;
-
     private byte[] imageByte;
     private byte[] largeImageByte;
 

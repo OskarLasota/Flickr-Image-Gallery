@@ -1,5 +1,7 @@
-package com.example.imagegallery;
+package com.example.imagegallery.api;
 
+import com.example.imagegallery.BuildConfig;
+import com.example.imagegallery.MainActivity;
 import com.example.imagegallery.adapters.ViewAdapter;
 import com.example.imagegallery.models.FlickrImage;
 import org.junit.Assert;
@@ -25,11 +27,10 @@ import static org.mockito.Mockito.mock;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 
-public class ExampleUnitTest {
+public class APIUnitTest {
 
     private final String key = BuildConfig.ApiKey;
     private final String keyword = "kitten";
-
 
 
     @Test
@@ -48,17 +49,6 @@ public class ExampleUnitTest {
 
         assertTrue(convertResponse(response).contains("Invalid API Key (Key has invalid format)"));
     }
-
-    @Test
-    public void initializing_recycler_adapter(){
-        FlickrImage img1 = new FlickrImage("id", "title1");
-        List<FlickrImage> list = new ArrayList<FlickrImage>();
-        list.add(img1);
-        MainActivity activity = mock(MainActivity.class);
-        ViewAdapter loginPresenter = new ViewAdapter(activity, list);
-        Assert.assertEquals(1, loginPresenter.getItemCount());
-    }
-
 
 
     private InputStream createConnection(String url) throws Exception{
