@@ -6,18 +6,21 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.example.imagegallery.databinding.ActivityMainBinding;
+import com.example.imagegallery.databinding.FullimageBinding;
 import com.example.imagegallery.models.FlickrImage;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayInputStream;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import maes.tech.intentanim.CustomIntent;
 
 public class FullScreenImageActivity extends AppCompatActivity {
 
     private FlickrImage image;
-    private ImageView ivImage;
+    private FullimageBinding binding;
 
     @Override
     public void onBackPressed() {
@@ -28,8 +31,7 @@ public class FullScreenImageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fullimage);
-        ivImage = findViewById(R.id.ivImage);
+        binding = DataBindingUtil.setContentView(this, R.layout.fullimage);
 
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
@@ -37,7 +39,7 @@ public class FullScreenImageActivity extends AppCompatActivity {
 
         ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(image.getLargeImageByte());
         Bitmap bitmap = BitmapFactory.decodeStream(arrayInputStream);
-        ivImage.setImageBitmap(bitmap);
+        binding.ivImage.setImageBitmap(bitmap);
 
     }
 }

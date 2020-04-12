@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.imagegallery.adapters.ViewAdapter;
+import com.example.imagegallery.databinding.ActivityMainBinding;
 import com.example.imagegallery.models.FlickrImage;
 import com.example.imagegallery.viewmodels.MainActivityViewModel;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -28,20 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
     private MainActivityViewModel mainActivityViewModel;
     private ViewAdapter mAdapter;
-    private RecyclerView recyclerView;
-    private ProgressBar progressBar;
-    private List<FlickrImage> listOfImages;
 
+    private List<FlickrImage> listOfImages;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.recycler_view);
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
-
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.progressBar.setVisibility(View.GONE);
 
         //improvising user input
         String keyword = "kitten";
@@ -72,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if(aBoolean){
-                    progressBar.setVisibility(View.VISIBLE);
+                    binding.progressBar.setVisibility(View.VISIBLE);
                 }else{
-                    progressBar.setVisibility(View.GONE);
+                    binding.progressBar.setVisibility(View.GONE);
                     mainActivityViewModel.dbStoreImages();
                 }
             }
@@ -83,8 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeView(List<FlickrImage> values){
         mAdapter = new ViewAdapter(this, values);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter(mAdapter);
+        binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        binding.recyclerView.setAdapter(mAdapter);
+        
 
         mAdapter.setOnItemClickListener(new ViewAdapter.OnItemClickListener() {
             @Override
